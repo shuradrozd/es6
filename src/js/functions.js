@@ -1,8 +1,8 @@
 const obj = {
-    name: "alex",
+    name: 'alex',
     getName: function() {
 
-        const getFullName = () => this.name + " Alexandrovich";
+        const getFullName = () => this.name + ' Alexandrovich';
         return getFullName();
     }
 };
