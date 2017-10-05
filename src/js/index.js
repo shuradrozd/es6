@@ -7,8 +7,8 @@ input.addEventListener('input', e => {
 
     movieService.getVideoByText(searchText)
         .then(result => {
-           const list = new MovieList(result);
-            list.drawToDom(movieList);
+            const list = new MovieList(result);
+             list.drawToDom(movieList);
         });
 
-});
+    });

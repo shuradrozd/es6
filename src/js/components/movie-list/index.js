@@ -1,24 +1,26 @@
-import movie from '../movie';
+import Movie from '../movie';
 
 export default class MovieList {
     constructor(data) {
         this.data = data;
-        this.renderMovie();
+
         //debugger
+        this.renderMovies();
+    }
+
+    renderMovies() {
+        this.fragment = document.createDocumentFragment();
+
+        this.data.results.forEach((data) => {
+            this.article = document.createElement('article');
+            this.article.classList.add('movie');
+            this.article.innerHTML = Movie.movie(data); //.title;
+
+            this.fragment.appendChild(this.article);
+        });
     }
     drawToDom(selector) {
         selector.appendChild(this.fragment);
-    }
-
-    renderMovie() {
-        this.fragment = document.createDocumentFragment();
-        this.data.results.forEach( (data) => {
-            const article  = document.createElement('article');
-            article.classList.add('movie');
-            article.innerHTML = movie(data);
-            this.fragment.appendChild(article);
-        });
-
 
     }
 }
