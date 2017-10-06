@@ -4,7 +4,10 @@ const input = document.querySelector('.search-input');
 const movieList = document.querySelector('.movies');
 input.addEventListener('input', e => {
     const searchText = e.target.value;
-
+    if (!searchText) {
+        movieList.innerHTML ='';
+        return;
+    }
     movieService.getVideoByText(searchText)
         .then(result => {
             const list = new MovieList(result);

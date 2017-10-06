@@ -117,28 +117,30 @@ var MovieList = function () {
         _classCallCheck(this, MovieList);
 
         this.data = data;
-        this.renderMovie();
-        debugger;
+
+        //debugger
+        this.renderMovies();
     }
 
     _createClass(MovieList, [{
-        key: 'drawToDom',
-        value: function drawToDom(selector) {
-            selector.appendChild(this.fragment);
-        }
-    }, {
-        key: 'renderMovie',
-        value: function renderMovie() {
+        key: 'renderMovies',
+        value: function renderMovies() {
             var _this = this;
 
             this.fragment = document.createDocumentFragment();
-            this.data.results.forEach(function (data) {
 
-                var article = document.createElement('article');
-                article.classList.add('movie');
-                article.innerHTML = (0, _movie2.default)(data);
-                _this.fragment.appendChild(article);
+            this.data.results.forEach(function (data) {
+                _this.article = document.createElement('article');
+                _this.article.classList.add('movie');
+                _this.article.innerHTML = _movie2.default.movie(data); //.title;
+
+                _this.fragment.appendChild(_this.article);
             });
+        }
+    }, {
+        key: 'drawToDom',
+        value: function drawToDom(selector) {
+            selector.appendChild(this.fragment);
         }
     }]);
 
@@ -157,10 +159,28 @@ exports.default = MovieList;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.movie = movie;
 function movie(data) {
-    var html = "\n    <article class=\"movie\">\n        <h2>" + data.title + "</h2>\n        <!--<date>" + data.date + "</date>-->\n        <div>" + data.country + "</div>\n        <div>" + data.imgSrc + "</div>\n        <div>" + data.homepageUrl + "</div>\n        <div>" + data.language + "</div>\n        <div>" + data.numberOfEpisodes + "</div>\n        <div>" + data.number_of_seasons + "</div>\n        <div>" + data.overview + "</div>\n        <div>" + data.popularity + "</div>\n</article> \n    ";
+    var html = '\n    <article class="movie">\n        <h2>' + data.title + '</h2>\n       <date>' + data.date + '</date>\n        <div>' + data.country + '</div>\n        <div>' + data.imgSrc + '</div>\n        <div>' + data.homepageUrl + '</div>\n        <div>' + data.language + '</div>\n        <div>' + data.numberOfEpisodes + '</div>\n        <div>' + data.number_of_seasons + '</div>\n        <div>' + data.overview + '</div>\n        <div>' + data.popularity + '</div>\n    </article> \n    ';
     return html;
+}
+exports.default = {
+    movie: movie
+};
+
+data = mapData(data);
+function mapData(data) {
+    return {
+        title: data.title || data.name || 'Unknown',
+        date: data.date,
+        country: data.country,
+        img: data.imgSrc,
+        homepageUrl: data.homepageUrl,
+        language: data.language,
+        numberOfEpisodes: data.numberOfEpisodes,
+        number_of_seasons: data.number_of_seasons,
+        overview: data.overview,
+        popularity: data.popularity
+    };
 }
 
 /***/ }),
@@ -184,7 +204,7 @@ function getVideoByText(text) {
     if (!text) {
         return;
     }
-    return fetch(_config2.default.searchMovieUrl + text).then(function (r) {
+    return fetch(_config2.default.searchMovieURL + text).then(function (r) {
         return r.json();
     });
 }

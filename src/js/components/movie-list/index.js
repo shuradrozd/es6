@@ -20,7 +20,11 @@ export default class MovieList {
         });
     }
     drawToDom(selector) {
+        this.clearList(selector);
         selector.appendChild(this.fragment);
 
+    }
+    clearList(selector) {
+        selector.innerHTML = '';
     }
 }
