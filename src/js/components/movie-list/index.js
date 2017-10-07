@@ -1,14 +1,15 @@
 import Movie from '../movie';
 
 export default class MovieList {
-    constructor(data) {
+    // constructor(data) {
+    //     this.data = data;
+    //
+    //     //debugger
+    //     this.renderMovies();
+    // }
+
+    renderMovies(data) {
         this.data = data;
-
-        //debugger
-        this.renderMovies();
-    }
-
-    renderMovies() {
         this.fragment = document.createDocumentFragment();
 
         this.data.results.forEach((data) => {

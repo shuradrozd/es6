@@ -4,17 +4,18 @@ function movie(data) {
     const mappingData = mapData(data);
     const html = `
     <article class="movie">
-        <h2>${mappingData.title}</h2>
-       <date>${mappingData.date}</date>
-        <div>${mappingData.country}</div>
+        <h2 class='movie-title'>${mappingData.title}</h2>
+       <date class='date'>${mappingData.date}</date>
+        <div class='country'>${mappingData.country}</div>
         <div class="picture"><img src='${mappingData.img}'/></div>
-        <div>${mappingData.language}</div>
-        <div>${mappingData.overview}</div>
-        <div>${mappingData.popularity}</div>
+        <div class='language'>${mappingData.language}</div>
+        <div class='overview'>${mappingData.overview}</div>
+        <div class='popularity'>${mappingData.popularity}</div>
     </article> 
     `;
     return html;
 }
+
 export default {
     movie
 }
