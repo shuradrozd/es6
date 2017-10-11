@@ -21,18 +21,20 @@ export default {
 }
 
 function mapData(data) {
+    const defaultValue = 'Unknown';
     return {
-        title: data.title || data.name || 'Unknown',
-        date: data.first_air_date,
-        country:data.origin_country,
+
+        title: data.title || data.name || defaultValue,
+        date: data.release_date || data.first_air_date|| defaultValue,
+        country:data.origin_country || defaultValue,
         img: getPictureUrl(data),
-        homepageUrl: data.homepageUrl,
-        language: data.original_language,
-        numberOfEpisodes: data.numberOfEpisodes,
-        number_of_seasons:data.number_of_seasons,
-        overview: data.overview,
-        popularity: data.popularity,
-        id: data.id
+        homepageUrl: data.homepageUrl || defaultValue,
+        language: data.original_language || defaultValue,
+        numberOfEpisodes: data.numberOfEpisodes || defaultValue,
+        number_of_seasons:data.number_of_seasons || defaultValue,
+        overview: data.overview || defaultValue,
+        popularity: data.popularity || defaultValue,
+        id: data.id || Date.now()
     }
 }
 
