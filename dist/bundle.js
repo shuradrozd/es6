@@ -101,16 +101,27 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var input = document.querySelector('.search-input');
 var movieList = document.querySelector('.movies');
 var list = new _movieList2.default();
+var filters = document.querySelector('.filters');
 input.addEventListener('input', function (e) {
     var searchText = e.target.value;
     if (!searchText) {
         list.clearList(movieList);
         return;
     }
-    _movieService2.default.getVideoByText(searchText).then(function (result) {
-        list.renderMovies(result);
+    _movieService2.default.getVideoByText(searchText).then(function (data) {
+        list.init(data);
+        list.renderMovies(data.results);
         list.drawToDom(movieList);
     });
+});
+filters.addEventListener('click', function (e) {
+    e.preventDefault();
+    var dataAttr = e.target.getAttribute('data-filter');
+    if (!dataAttr) {
+        return;
+    }
+    list.sort(dataAttr);
+    list.drawToDom(movieList);
 });
 
 /***/ }),
@@ -132,6 +143,8 @@ var _movie2 = _interopRequireDefault(_movie);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var MovieList = function () {
@@ -140,7 +153,7 @@ var MovieList = function () {
     }
 
     _createClass(MovieList, [{
-        key: 'renderMovies',
+        key: 'init',
 
         // constructor(data) {
         //     this.data = data;
@@ -148,14 +161,18 @@ var MovieList = function () {
         //     //debugger
         //     this.renderMovies();
         // }
-
+        value: function init(data) {
+            this.data = data;
+        }
+    }, {
+        key: 'renderMovies',
         value: function renderMovies(data) {
             var _this = this;
 
-            this.data = data;
+            //this.data = data;
             this.fragment = document.createDocumentFragment();
 
-            this.data.results.forEach(function (data) {
+            data.forEach(function (data) {
                 _this.article = document.createElement('article');
                 _this.article.classList.add('movie');
                 _this.article.innerHTML = _movie2.default.movie(data); //.title;
@@ -173,6 +190,55 @@ var MovieList = function () {
         key: 'clearList',
         value: function clearList(selector) {
             selector.innerHTML = '';
+        }
+    }, {
+        key: 'sortByMaxRating',
+        value: function sortByMaxRating(data) {
+            data.sort(function (a, b) {
+                return b.popularity - a.popularity;
+            });
+            this.renderMovies(data);
+        }
+    }, {
+        key: 'sortByMinRating',
+        value: function sortByMinRating(data) {
+            data.sort(function (a, b) {
+                return a.popularity - b.popularity;
+            });
+            this.renderMovies(data);
+        }
+    }, {
+        key: 'sortByDateNew',
+        value: function sortByDateNew(data) {
+            data.sort(function (a, b) {
+                return new Date(b.release_date) - new Date(a.release_date);
+            });
+            this.renderMovies(data);
+        }
+    }, {
+        key: 'sortByDateOld',
+        value: function sortByDateOld(data) {
+            data.sort(function (a, b) {
+                return new Date(a.release_date) - new Date(b.release_date);
+            });
+            this.renderMovies(data);
+        }
+    }, {
+        key: 'sort',
+        value: function sort(filter) {
+            var data = [].concat(_toConsumableArray(this.data.results));
+            if (filter === 'ratingMax') {
+                this.sortByMaxRating(data);
+            }
+            if (filter === 'ratingMin') {
+                this.sortByMinRating(data);
+            }
+            if (filter === 'dateNew') {
+                this.sortByDateNew(data);
+            }
+            if (filter === 'dateOld') {
+                this.sortByDateOld(data);
+            }
         }
     }]);
 
@@ -210,18 +276,20 @@ exports.default = {
 
 
 function mapData(data) {
+    var defaultValue = 'Unknown';
     return {
-        title: data.title || data.name || 'Unknown',
-        date: data.first_air_date || 'Unknown',
-        country: data.origin_country || 'Unknown',
+
+        title: data.title || data.name || defaultValue,
+        date: data.release_date || data.first_air_date || defaultValue,
+        country: data.origin_country || defaultValue,
         img: getPictureUrl(data),
-        homepageUrl: data.homepageUrl,
-        language: data.original_language,
-        numberOfEpisodes: data.numberOfEpisodes,
-        number_of_seasons: data.number_of_seasons,
-        overview: data.overview,
-        popularity: data.popularity,
-        id: data.id
+        homepageUrl: data.homepageUrl || defaultValue,
+        language: data.original_language || defaultValue,
+        numberOfEpisodes: data.numberOfEpisodes || defaultValue,
+        number_of_seasons: data.number_of_seasons || defaultValue,
+        overview: data.overview || defaultValue,
+        popularity: data.popularity || defaultValue,
+        id: data.id || Date.now()
     };
 }
 

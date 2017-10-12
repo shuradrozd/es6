@@ -24,6 +24,7 @@ export default class MovieList {
         });
     }
     drawToDom(selector) {
+        this.selector = selector;
         this.clearList(selector);
         selector.appendChild(this.fragment);
 
@@ -71,5 +72,7 @@ export default class MovieList {
         }
 
     }
-
+    hide() {
+        this.selector.style.display = 'none';
+    }
 }

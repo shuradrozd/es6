@@ -1,5 +1,6 @@
 import MovieList from './components/movie-list';
 import movieService from "./movie-service";
+import movieCard from './components/movie-card';
 const input = document.querySelector('.search-input');
 const movieList = document.querySelector('.movies');
 const list = new MovieList();
@@ -27,3 +28,17 @@ filters.addEventListener('click', (e) =>{
     list.sort(dataAttr);
     list.drawToDom(movieList);
 })
+movieList.addEventListener('click', (e) => {
+    const target = e.target;
+    const link = target.closest('.movie-link');
+    let id;
+    e.preventDefault();
+    if (!link) {
+        return;
+    }
+    id = link.getAttribute('href');
+    movieService.getVideoById(id)
+        .then((data) =>{
+            movieCard.movieRender(data);
+        });
+});

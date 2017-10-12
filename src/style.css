@@ -8,9 +8,27 @@
 .pucture {
     max-width: 300px;
     max-height: 300px;
+    text-align: center;
+}
+.movies {
+    width: 98%;
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.movie {
+    box-sizing: border-box;
+    width: 33%;
+    padding: 10px;
+
 }
 
 img {
     max-width: 20%;
     max-height: 20%;
+}
+a:hover.movie-link {
+    text-decoration: none;
+    color: #000;
 }
